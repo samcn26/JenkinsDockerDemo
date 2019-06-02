@@ -13,9 +13,12 @@ pipeline {
             }
             post {
                 success {
-                    steps {
-                        sh "echo ${env.DOCKER_PASSWORD} | docker login --username ${env.DOCKER_USERNAME} --password-stdin"
-                        sh "docker push samcn26/tomcatwebapp:${env.BUILD_NUMBER}"                    }
+                    stage ('Push to docker hub') {
+                        steps {
+                            sh "echo ${env.DOCKER_PASSWORD} | docker login --username ${env.DOCKER_USERNAME} --password-stdin"
+                            sh "docker push samcn26/tomcatwebapp:${env.BUILD_NUMBER}"                    
+                        }
+                    }
                 }
             }
         }
