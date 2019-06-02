@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKERHUB = credentials ('dockerhub')
+    }
+
     tools {
         maven 'localMaven'
     }
@@ -20,7 +24,7 @@ pipeline {
 
         stage ('Push to docker hub') {
              steps {
-                sh "echo ${env.DOCKER_PASSWORD} | docker login --username ${env.DOCKER_USERNAME} --password-stdin"
+                sh "echo ${DOCKERHUB_PSW} | docker login --username ${DOCKERHUB_USR} --password-stdin"
                 sh "docker push samcn26/tomcatwebapp:${env.BUILD_NUMBER}"                    
             }
         }
